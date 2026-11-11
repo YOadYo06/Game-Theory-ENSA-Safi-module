@@ -20,9 +20,15 @@ Test sans LLM : `resoudre_bimatrice.invoke({...})` puis, avec Ollama, verbose=Tr
 from __future__ import annotations
 
 import json
-from typing import Any, List
+from typing import Any, List, Union
 
 import numpy as np
+
+# Type accepté par l'outil : une matrice (liste de listes) OU sa représentation
+# JSON sous forme de chaîne. Le second cas est indispensable en pratique :
+# llama3.1 passe parfois « "[[3, 0], [5, 1]]" ». Sans ce Union, le validateur
+# pydantic de LangChain rejette la chaîne AVANT l'appel de la fonction.
+Matrice = Union[list, str]
 
 from .jeux import cournot as _cournot
 from .jeux import enumeration_supports
@@ -84,7 +90,7 @@ def _comme_matrice(v: Any) -> Any:
 
 
 @tool
-def resoudre_bimatrice(A: list, B: list) -> str:
+def resoudre_bimatrice(A: Matrice, B: Matrice) -> str:
     """Résout un jeu à deux joueurs m x n : équilibres de Nash purs et mixtes.
 
     Args:
