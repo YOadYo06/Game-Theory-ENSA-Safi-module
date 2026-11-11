@@ -1,0 +1,11 @@
+modele,enonce,repetition,outils,appel_outil,a_choix,duree_s
+llama3.1,1,1,['cournot'],True,False,50.049246000000494
+llama3.1,2,1,['resoudre_bimatrice'],True,False,59.68216089999987
+llama3.1,3,1,['resoudre_bimatrice'],True,False,95.74240660000032
+llama3.1,4,1,['resoudre_bimatrice'],True,False,83.95103629999903
+llama3.1,5,1,['cournot'],True,False,61.048628099999405
+llama3.2:3b,1,1,['cournot'],True,False,71.62274869999965
+llama3.2:3b,2,1,['resoudre_bimatrice'],True,False,27.665595599999506
+llama3.2:3b,3,1,['resoudre_bimatrice'],True,False,45.85277540000061
+llama3.2:3b,4,1,['resoudre_bimatrice'],True,False,23.543153300000995
+llama3.2:3b,5,1,['cournot'],True,False,20.44213260000106

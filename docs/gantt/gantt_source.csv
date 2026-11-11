@@ -1,0 +1,18 @@
+Phase,Tache,Responsable,Debut,Fin,Duree_j,Statut
+0 - Fiche de lecture,Fiche de lecture 2 pages (LaTeX),Fatine,2026-09-07,2026-09-11,5,Fait
+0 - Fiche de lecture,Depot GitHub + Gantt previsionnel,Fatine,2026-09-07,2026-09-11,5,Fait
+1 - Theorie,Formules Nash / Cournot / Bertrand,Fatine,2026-09-07,2026-09-18,10,En cours
+1 - Theorie,Hypotheses et limites + conventions A/B,Fatine,2026-09-14,2026-09-18,5,A faire
+2 - Donnees,Jeux du cours (PD BoS PFC),Hiba,2026-09-14,2026-09-18,5,A faire
+2 - Donnees,Jeux aleatoires m x n (graines fixees),Hiba,2026-09-21,2026-09-25,5,A faire
+3 - Python,est_nash + enumeration_supports,Ikram,2026-09-14,2026-09-25,10,En cours
+3 - Python,cournot + cournot_grille,Ikram,2026-09-21,2026-09-25,5,A faire
+3 - Python,Tests pytest sur les jeux du cours,Hiba,2026-09-28,2026-10-02,5,A faire
+4 - Agents,Outils resoudre_bimatrice + cournot,Youness,2026-09-28,2026-10-02,5,A faire
+4 - Agents,Agent Ollama (verbose=True),Youness,2026-09-28,2026-10-02,5,A faire
+4 - Agents,Rotation des roles (fin S4),Tous,2026-10-02,2026-10-02,1,A faire
+5 - Experiences,20 jeux aleatoires (nb equilibres temps),Hiba,2026-10-05,2026-10-09,5,A faire
+5 - Experiences,5 enonces x 2 modeles Ollama,Youness,2026-10-05,2026-10-09,5,A faire
+6 - Redaction,Rapport a 80 pourcent (Gantt inclus),Fatine,2026-10-12,2026-10-16,5,A faire
+6 - Redaction,Gantt realise + analyse des ecarts,Fatine,2026-10-12,2026-10-16,5,A faire
+7 - Bilan,Rapport final + code zippe,Tous,2026-10-19,2026-10-23,5,A faire
