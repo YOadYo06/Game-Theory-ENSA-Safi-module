@@ -71,13 +71,27 @@ def _json(obj: Any) -> Any:
     return obj
 
 
+def _comme_matrice(v: Any) -> Any:
+    """Accepte une matrice déjà sous forme de liste, ou une chaîne JSON la représentant.
+
+    Certains modèles (ex. llama3.1) passent parfois les matrices sous forme de
+    chaîne « "[[3, 0], [5, 1]]" ». On la décode avec json.loads (sûr : jamais
+    eval()/exec(), cf. Règle n°5).
+    """
+    if isinstance(v, str):
+        return json.loads(v)
+    return v
+
+
 @tool
 def resoudre_bimatrice(A: list, B: list) -> str:
     """Résout un jeu à deux joueurs m x n : équilibres de Nash purs et mixtes.
 
     Args:
-        A: matrice des gains du joueur 1 (lignes), liste de listes m x n.
-        B: matrice des gains du joueur 2 (colonnes), liste de listes m x n.
+        A: matrice des gains du joueur 1 (lignes), liste de listes m x n
+           (ou chaîne JSON la représentant).
+        B: matrice des gains du joueur 2 (colonnes), liste de listes m x n
+           (ou chaîne JSON la représentant).
 
     Returns:
         Une chaîne JSON avec la taille du jeu, le nombre d'équilibres et, pour
@@ -85,9 +99,9 @@ def resoudre_bimatrice(A: list, B: list) -> str:
         En cas d'entrée invalide, renvoie {"erreur": "..."}.
     """
     try:
-        Aa = np.asarray(A, dtype=float)
-        Bb = np.asarray(B, dtype=float)
-    except (TypeError, ValueError):
+        Aa = np.asarray(_comme_matrice(A), dtype=float)
+        Bb = np.asarray(_comme_matrice(B), dtype=float)
+    except (TypeError, ValueError, json.JSONDecodeError):
         return json.dumps({"erreur": "A et B doivent être des matrices numériques."})
 
     if Aa.ndim != 2 or Bb.ndim != 2 or Aa.shape != Bb.shape:
