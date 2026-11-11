@@ -79,6 +79,18 @@ SCHEMAS = [
 OUTILS = {"resoudre_bimatrice": resoudre_bimatrice, "cournot": cournot}
 
 
+def _executer_outil(fn, args: dict) -> str:
+    """Exécute un outil, qu'il soit une fonction simple ou un `StructuredTool` LangChain.
+
+    Sans LangChain, `resoudre_bimatrice` est une fonction (shim) ; avec LangChain,
+    `@tool` renvoie un `StructuredTool` non appelable directement mais doté de
+    `.invoke(args)`. On couvre les deux cas.
+    """
+    if hasattr(fn, "invoke"):  # StructuredTool (LangChain) ou shim hors ligne
+        return fn.invoke(args)
+    return fn(**args)
+
+
 def _chat(messages, model=MODELE):
     payload = {
         "model": model,
@@ -118,7 +130,7 @@ def poser_question(question: str, model: str = MODELE, max_tours: int = 4, verbo
             if isinstance(args, str):
                 args = json.loads(args or "{}")
             fn = OUTILS.get(nom)
-            resultat = fn(**args) if fn else json.dumps({"erreur": f"outil inconnu: {nom}"})
+            resultat = _executer_outil(fn, args) if fn else json.dumps({"erreur": f"outil inconnu: {nom}"})
             if verbose:
                 print(f"  [outil] {nom}({json.dumps(args, ensure_ascii=False)})")
             appels.append({"nom": nom, "arguments": args, "resultat": resultat})
