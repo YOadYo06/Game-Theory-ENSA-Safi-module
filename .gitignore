@@ -1,0 +1,71 @@
+# =====================================================================
+#  .gitignore — Projet 1 — Groupe 1
+#  Règle : on ne pousse QUE le code source, les tests, les notebooks
+#  (avec sorties), les sources LaTeX et les PDF/PNG livrables.
+#  Tout ce qui se régénère (environnements, caches, fichiers LaTeX
+#  intermédiaires) reste hors du dépôt.
+# =====================================================================
+
+# --- Environnements virtuels (JAMAIS pousser : volumineux, spécifique à la machine)
+.venv/
+venv/
+env/
+ENV/
+*.venv
+
+# --- Python : caches et artefacts de compilation
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.installed.cfg
+
+# --- Caches d'outils
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+
+# --- Notebooks : points de contrôle Jupyter
+.ipynb_checkpoints/
+
+# --- Secrets et configuration locale (JAMAIS pousser)
+.env
+.env.*
+*.env
+secrets.json
+*.key
+*.pem
+
+# --- Roues téléchargées (pip download --dest wheels)
+wheels/
+
+# --- Sorties de calcul : on garde les Gantts livrables, on ignore le reste
+docs/gantt/*.png
+!docs/gantt/gantt_previsionnel.png
+!docs/gantt/gantt_realise.png
+
+# --- LaTeX : fichiers intermédiaires (les .tex et .pdf sont conservés)
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+
+# --- Éditeurs / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
