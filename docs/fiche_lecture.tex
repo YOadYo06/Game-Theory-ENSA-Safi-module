@@ -1,0 +1,142 @@
+% =====================================================================
+%  Fiche de lecture (Phase 0) — Projet 1
+%  Solveur de Nash m x n et duopoles (Cournot, Bertrand)
+%  Groupe 1 — Théorie des Jeux et Systèmes Multi-Agents — ENSA Safi
+%  Compilation : pdflatex fiche_lecture.tex   (2 pages maximum)
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+\geometry{margin=1.9cm}
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\setlist[itemize]{itemsep=1pt,topsep=2pt,parsep=0pt}
+
+\newcommand{\R}{\mathbb{R}}
+
+\title{\vspace{-1.2cm}\textbf{Fiche de lecture (Phase 0) — Projet 1}\\[2pt]
+\large Solveur de Nash $m\times n$ et duopoles (Cournot, Bertrand)}
+\author{Groupe 1 : ACHTOUK Fatine, ADIL Youness, BELHIMER Ikram, BOULHAIL Hiba\\
+\small Module : Théorie des Jeux et Systèmes Multi-Agents --- ENSA Safi --- Pr.\ A.\ JRAIFI}
+\date{Année universitaire 2026--2027 --- Semaine 1}
+
+\begin{document}
+\maketitle
+\vspace{-0.6cm}
+
+\section*{1. Formules clés}
+\noindent\textbf{Conventions.} $A\in\R^{m\times n}$ : gains du joueur 1 (lignes) ;
+$B\in\R^{m\times n}$ : gains du joueur 2 (colonnes) ; indices à partir de $0$.
+$x\in\Delta_m$ (joueur 1), $y\in\Delta_n$ (joueur 2).
+
+\smallskip
+\noindent\textbf{Équilibre de Nash (mixte).} $(x,y)$ est un équilibre de Nash si et seulement
+si aucune \emph{déviation pure} n'est profitable :
+\begin{equation}
+(Ay)_i \le x^{\top} A y \quad \forall i \in \{1,\dots,m\},
+\qquad
+(x^{\top}B)_j \le x^{\top} B y \quad \forall j \in \{1,\dots,n\}.
+\end{equation}
+\emph{Avec mes mots :} au lieu de tester toutes les stratégies mixtes (infinité), il suffit de
+vérifier que chaque joueur ne gagne pas plus en jouant une stratégie \emph{pure} plutôt que sa
+stratégie mixte. C'est cette condition, simple à tester, qu'on utilise pour valider chaque
+solution.
+
+\smallskip
+\noindent\textbf{Indifférence sur les supports.} Soient $I=\mathrm{supp}(x)$ et
+$J=\mathrm{supp}(y)$ avec $|I|=|J|=k$. Sur le support, le joueur 1 est indifférent entre
+toutes ses stratégies de $I$, et de même pour le joueur 2 sur $J$ :
+\begin{equation}
+(Ay)_i = v_1 \ \ (i\in I),
+\qquad
+(x^{\top}B)_j = v_2 \ \ (j\in J),
+\qquad
+\sum_{i\in I} x_i = 1,\quad \sum_{j\in J} y_j = 1 .
+\end{equation}
+\emph{Avec mes mots :} un joueur qui mélange plusieurs stratégies doit être exactement
+indifférent entre elles (sinon il ne jouerait que la meilleure). Cela donne un petit système
+linéaire à résoudre pour chaque couple de supports.
+
+\smallskip
+\noindent\textbf{Cournot} ($P(Q)=a-bQ$, coût marginal constant $c$, $a>c$) :
+\begin{equation}
+\text{meilleure réponse : } q_i=\frac{a-c-b\sum_{j\ne i} q_j}{2b},
+\qquad
+q^{*}=\frac{a-c}{(n+1)b},
+\qquad
+\pi^{*}=\frac{(a-c)^2}{b\,(n+1)^2}.
+\end{equation}
+Monopole : $Q=\dfrac{a-c}{2b}$, $\pi=\dfrac{(a-c)^2}{4b}$.
+Duopole ($n=2$) : $q^{*}=\dfrac{a-c}{3b}$, $\pi^{*}=\dfrac{(a-c)^2}{9b}$.
+Cartel (deux firmes) : $q=\dfrac{a-c}{4b}$, $\pi=\dfrac{(a-c)^2}{8b}$.
+
+\smallskip
+\noindent\textbf{Bertrand} (biens homogènes, coûts marginaux égaux $c$) : l'unique équilibre
+est $p_1=p_2=c$ et le profit est nul (paradoxe de Bertrand), alors que le monopole fixerait
+$p^{M}=\dfrac{a+c}{2}$.
+
+\section*{2. Lien avec le code du cours}
+\begin{itemize}
+  \item \texttt{nash\_mixte\_2x2} (cours) $\rightarrow$ \textbf{à généraliser} en
+        \texttt{enumeration\_supports(A, B, tol=1e-9)} : la version du cours est limitée à
+        $2\times2$, la nôtre balaie tous les supports $k=1,\dots,\min(m,n)$.
+  \item Nouvelle fonction de contrôle \texttt{est\_nash(A, B, x, y, tol=1e-9)} : teste (1)
+        pour tout profil candidat (elle sert aussi de garde-fou dans les tests).
+  \item Nouvelle fonction \texttt{cournot(a, b, c, n=2)} (formules fermées) et
+        \texttt{cournot\_grille(a, b, c, qmax)} qui construit les matrices de gains et
+        réutilise \texttt{equilibres\_nash\_purs} du cours.
+  \item \textbf{Outils agent à ajouter} dans \texttt{agent\_tj\_sma.py} :
+        \texttt{resoudre\_bimatrice(A, B)} et \texttt{cournot(a, b, c, n\_firmes)}
+        (plafonds sur $m$, $n$ et le nombre de firmes ; sortie JSON ; types annotés).
+\end{itemize}
+
+\section*{3. Algorithme : démarche de calcul en Python}
+\begin{enumerate}[label=\arabic*.]
+  \item Pour $k=1$ à $\min(m,n)$ :
+  \item énumérer chaque support $I$ de lignes ($|I|=k$) et chaque support $J$ de colonnes
+        ($|J|=k$) ;
+  \item résoudre le système (2) sur $(I,J)$ : inconnues $(y_j)_{j\in J}$ et $v_1$, puis
+        $(x_i)_{i\in I}$ et $v_2$ (deux petits systèmes linéaires indépendants,
+        \texttt{numpy.linalg.lstsq}) ;
+  \item rejeter si une composante est négative (hors du simplexe) ou si le système est
+        incompatible (jeu dégénéré) ;
+  \item tester la non-déviation (1) via \texttt{est\_nash} ; conserver l'équilibre sinon.
+\end{enumerate}
+\emph{Complexité :} le nombre de couples de supports vaut
+$\sum_{k} \binom{m}{k}\binom{n}{k}$, soit une croissance exponentielle en la taille --- d'où
+l'expérience « nombre d'équilibres et temps de calcul en fonction de la taille ». Pour Cournot,
+on compare $q^{*}$ (formule fermée) aux équilibres purs obtenus sur une grille de quantités.
+
+\section*{4. Hypothèses du modèle et limites}
+\begin{itemize}
+  \item Jeux \emph{statiques}, finis, à \emph{information complète} ; rationalité commune.
+  \item \textbf{Jeux non dégénérés} pour l'énumération des supports : dans un jeu dégénéré, des
+        équilibres à supports de tailles différentes existent et le système d'indifférence
+        devient sous-déterminé (à signaler, pas à conclure « pas d'équilibre »).
+  \item \textbf{Cournot} : demande linéaire, coûts marginaux constants, quantités choisies
+        simultanément, produit homogène. \textbf{Bertrand} : biens homogènes, coûts égaux,
+        prix simultanés.
+  \item Limite numérique : toutes les comparaisons se font avec une \emph{tolérance}
+        (\texttt{tol=1e-9}) --- jamais d'égalité de flottants exacte.
+\end{itemize}
+
+\section*{5. Données et paramètres de référence}
+\begin{itemize}
+  \item Jeux du cours : Jeu 1, Jeu 2, dilemme du prisonnier, bataille des sexes
+        (mixte $p=\tfrac23$, $q=\tfrac13$), pierre-feuille-ciseaux ($3\times3$, équilibre
+        $(\tfrac13,\tfrac13,\tfrac13)$) ; jeux aléatoires $m\times n$ à graine fixée.
+  \item Cournot : $a=100$, $b=1$, $c=10$ $\Rightarrow$ $q^{*}=30$ par firme et profit $900$ ;
+        cartel : $22{,}5$ par firme et profit $1012{,}5$.
+  \item Reproductibilité : graines fixées pour toutes les expériences
+        (\texttt{np.random.default\_rng(seed)}).
+\end{itemize}
+
+\end{document}
