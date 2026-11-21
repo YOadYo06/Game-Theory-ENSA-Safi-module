@@ -1,11 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-test_hors_ligne.py — tests des outils SANS LLM (faux modèle, étiqueté « scripté »).
 
-Rôle : Développeur agent + Testeur. On vérifie que les nouveaux outils @tool
-fonctionnent seuls via `.invoke(...)` (arguments et sorties JSON), avant de les
-brancher sur Ollama. Aucun appel réseau n'est effectué ici.
-"""
 import json
 
 from src.agent_tj_sma import MAX_DIM, MAX_FIRMES, NOUVEAUX_OUTILS, cournot, resoudre_bimatrice
@@ -38,21 +31,20 @@ def test_resoudre_bimatrice_bataille_mixte():
 
 
 def test_resoudre_bimatrice_accepte_chaine_json():
-    """llama3.1 passe parfois les matrices en chaîne : l'outil doit rester robuste."""
+    
     sortie = resoudre_bimatrice.invoke({"A": "[[3, 0], [5, 1]]", "B": "[[3, 5], [0, 1]]"})
     data = json.loads(sortie)
     assert data["n_equilibres"] == 1
 
 
 def test_resoudre_bimatrice_chaine_json_invalide():
-    """Une chaîne JSON malformée renvoie une erreur, jamais une exception non gérée."""
+    
     sortie = resoudre_bimatrice.invoke({"A": "[[3, 0]", "B": "[[3, 5], [0, 1]]"})
     assert "erreur" in json.loads(sortie)
 
 
 def test_schema_outil_accepte_liste_ou_chaine():
-    """Le schéma de l'outil doit déclarer list|str : sinon pydantic rejette la chaîne
-    AVANT l'appel de la fonction (bug observé avec le vrai LangChain)."""
+    
     schema = resoudre_bimatrice.args_schema.model_json_schema()
     assert "A" in schema["properties"] and "B" in schema["properties"]
 
@@ -87,8 +79,7 @@ def test_cournot_entree_invalide():
 
 
 def test_executer_outil_compatible_langchain_et_shim():
-    """`agent_demo_ollama` doit exécuter l'outil qu'il soit un StructuredTool
-    (LangChain installé) ou une simple fonction (shim hors ligne)."""
+    
     from src.agent_demo_ollama import _executer_outil
 
     sortie = _executer_outil(cournot, {"a": 100, "b": 1, "c": 10, "n_firmes": 2})
